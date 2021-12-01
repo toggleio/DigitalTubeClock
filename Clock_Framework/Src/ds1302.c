@@ -1,150 +1,191 @@
-// DS1302 Ê±ÖÓĞ¾Æ¬Çı¶¯ÎÄ¼ş
+/**
+  ******************************************************************************
+  * @file            ds1302.c
+  * @version         v1.0
+  * @author          Xiaohei
+  * @date            2021-11-20
+  * @brief           DS1302 driver program body
+  ******************************************************************************
+  * @attention
+  *
+  * Project git: github.com/mobyw/DigitalTubeClock
+  *
+  ******************************************************************************
+  */
 
 #include "ds1302.h"
 
-// ´æ·Åµ±Ç°Ãë¡¢·Ö¡¢Ê±Êı¾İ
-// ÔËĞĞ `read_time()` ¸üĞÂÊı¾İ
-// ÔÚÍ·ÎÄ¼şÖĞÉùÃ÷ÁË extern
-unsigned char time_sec = 0;
-unsigned char time_min = 0;
-unsigned char time_hour = 0;
+unsigned char time_sec = 0;     ///< å½“å‰æ—¶é—´ï¼ˆç§’ï¼‰
+unsigned char time_min = 0;     ///< å½“å‰æ—¶é—´ï¼ˆåˆ†ï¼‰
+unsigned char time_hour = 0;    ///< å½“å‰æ—¶é—´ï¼ˆæ—¶ï¼‰
 
-// ´æ·ÅÄÖÖÓµÄ·Ö¡¢Ê±Êı¾İ
-// ´ËÊ¾ÀıÖĞÎ´Ê¹ÓÃµ½
-unsigned char alarm_min = 0;
-unsigned char alarm_hour = 0;
+unsigned char alarm_min = 0;    ///< é—¹é’Ÿæ—¶é—´ï¼ˆåˆ†ï¼‰
+unsigned char alarm_hour = 0;   ///< é—¹é’Ÿæ—¶é—´ï¼ˆæ—¶ï¼‰
 
-// ¶ÁĞ¾Æ¬¼Ä´æÆ÷µÄµØÖ·Êı×é
-// Ãë ·Ö Ê± ÈÕ ÔÂ Äê ĞÇÆÚ
-unsigned char code write_addr[] = {0x80, 0x82, 0x84, 0x86, 0x88, 0x8c, 0x8a}; // Ğ´µØÖ·
-unsigned char code read_addr[] = {0x81, 0x83, 0x85, 0x87, 0x89, 0x8d, 0x8b};  // ¶ÁµØÖ·
+unsigned char code write_addr[] = {0x80, 0x82, 0x84, 0x86, 0x88, 0x8c, 0x8a}; ///< æ—¶é’ŸèŠ¯ç‰‡å¯„å­˜å™¨å†™åœ°å€ï¼ˆç§’ åˆ† æ—¶ æ—¥ æœˆ å¹´ æ˜ŸæœŸï¼‰
+unsigned char code read_addr[] = {0x81, 0x83, 0x85, 0x87, 0x89, 0x8d, 0x8b};  ///< æ—¶é’ŸèŠ¯ç‰‡å¯„å­˜å™¨è¯»åœ°å€ï¼ˆç§’ åˆ† æ—¶ æ—¥ æœˆ å¹´ æ˜ŸæœŸï¼‰
 
-// ³õÊ¼Ê±¼äÉèÖÃ
-// Ãë ·Ö Ê± ÈÕ ÔÂ Äê ĞÇÆÚ
-// Ê¹ÓÃ BCD Âë, Èç 55 ¼´Îª 0x55
+/**
+ * @brief åˆå§‹æ—¶é—´è®¾ç½®
+ * 
+ * ä¾æ¬¡ä¸ºï¼š ç§’ åˆ† æ—¶ æ—¥ æœˆ å¹´ æ˜ŸæœŸ
+ * 
+ * ä½¿ç”¨ BCD ç , å¦‚ 55 å³ä¸º 0x55
+ */
 unsigned char code init_ds[] = {0x56, 0x34, 0x12, 0x10, 0x10, 0x21, 0x07};
 
-// Ğ´Êı¾İ
+/// å†™æ•°æ®
+
+/**
+ * @brief           DS1302 å†™å¯„å­˜å™¨
+ * 
+ * @param   addr    å†™å…¥å¯„å­˜å™¨åœ°å€
+ * @param   dat     å†™å…¥å¯„å­˜å™¨æ•°æ®
+ */
 void ds1302_write(unsigned char addr, unsigned char dat)
 {
     unsigned char i;
 
-    rst = 1; // ¸´Î»ÏßÀ­¸ß
+    rst = 1; // å¤ä½çº¿æ‹‰é«˜
 
     for (i = 0; i < 8; i++)
-    {            // µÍÎ»ÔÚÇ°
-        clk = 0; // Ê±ÖÓÏßÀ­µÍ¿ªÊ¼Ğ´Êı¾İ
+    {            // ä½ä½åœ¨å‰
+        clk = 0; // æ—¶é’Ÿçº¿æ‹‰ä½å¼€å§‹å†™æ•°æ®
         io = addr & 0x01;
-        addr >>= 1; // µØÖ·ÓÒÒÆÒ»Î»
-        clk = 1;    // Ê±ÖÓÏßÀ­¸ß
+        addr >>= 1; // åœ°å€å³ç§»ä¸€ä½
+        clk = 1;    // æ—¶é’Ÿçº¿æ‹‰é«˜
     }
 
     for (i = 0; i < 8; i++)
     {
-        clk = 0; // Ê±ÖÓÏßÀ­µÍ¿ªÊ¼Ğ´Êı¾İ
+        clk = 0; // æ—¶é’Ÿçº¿æ‹‰ä½å¼€å§‹å†™æ•°æ®
         io = dat & 0x01;
-        dat >>= 1; // Êı¾İÓÒÒÆÒ»Î»
-        clk = 1;   // Ê±ÖÓÏßÀ­¸ß
+        dat >>= 1; // æ•°æ®å³ç§»ä¸€ä½
+        clk = 1;   // æ—¶é’Ÿçº¿æ‹‰é«˜
     }
 
-    rst = 0; // ¸´Î»ÏßºÏµÍ
+    rst = 0; // å¤ä½çº¿åˆä½
     clk = 0;
     io = 0;
 }
 
-// ¶ÁÊı¾İ
+
+/**
+ * @brief           DS1302 è¯»å¯„å­˜å™¨
+ * 
+ * @param   addr    è¯»å–å¯„å­˜å™¨åœ°å€
+ * @return          è¯»å–å¯„å­˜å™¨æ•°æ®
+ */
 unsigned char ds1302_read(unsigned char addr)
 {
     unsigned char value, i;
 
-    rst = 1; // ¸´Î»ÏßÀ­¸ß
+    rst = 1; // å¤ä½çº¿æ‹‰é«˜
 
     for (i = 0; i < 8; i++)
-    {            // µÍÎ»ÔÚÇ°
-        clk = 0; // Ê±ÖÓÏßÀ­µÍ¿ªÊ¼Ğ´Êı¾İ
+    {            // ä½ä½åœ¨å‰
+        clk = 0; // æ—¶é’Ÿçº¿æ‹‰ä½å¼€å§‹å†™æ•°æ®
         io = addr & 0x01;
-        addr >>= 1; // µØÖ·ÓÒÒÆÒ»Î»
-        clk = 1;    // Ê±ÖÓÏßÀ­¸ß
+        addr >>= 1; // åœ°å€å³ç§»ä¸€ä½
+        clk = 1;    // æ—¶é’Ÿçº¿æ‹‰é«˜
     }
 
     for (i = 0; i < 8; i++)
     {
-        clk = 0; // Ê±ÖÓÏßÀ­µÍ¿ªÊ¼¶ÁÊı¾İ
+        clk = 0; // æ—¶é’Ÿçº¿æ‹‰ä½å¼€å§‹è¯»æ•°æ®
         value >>= 1;
         if (io == 1)
             value |= 0x80;
-        clk = 1; // Ê±ÖÓÏßÀ­¸ß
+        clk = 1; // æ—¶é’Ÿçº¿æ‹‰é«˜
     }
 
-    rst = 0; // ¸´Î»ÏßÀ­µÍ
+    rst = 0; // å¤ä½çº¿æ‹‰ä½
     clk = 0;
     io = 0;
-    return value; // ·µ»ØÊı¾İ
+
+    return value; // è¿”å›æ•°æ®
 }
 
-// ¶ÁÈ¡Ê±¼ä
+/**
+ * @brief   è¯»å–æ—¶é—´
+ */
 void read_time()
 {
-    time_sec = ds1302_read(read_addr[0]);  // ¶ÁÃë
-    time_min = ds1302_read(read_addr[1]);  // ¶Á·Ö
-    time_hour = ds1302_read(read_addr[2]); // ¶ÁÊ±
+    time_sec = ds1302_read(read_addr[0]);  // è¯»ç§’
+    time_min = ds1302_read(read_addr[1]);  // è¯»åˆ†
+    time_hour = ds1302_read(read_addr[2]); // è¯»æ—¶
 
-//  date_day    = ds1302_read(read_addr[3]);    // ¶ÁÈÕ
-//  date_month  = ds1302_read(read_addr[4]);    // ¶ÁÔÂ
-//  date_year   = ds1302_read(read_addr[5]);    // ¶ÁÄê
-//  date_week   = ds1302_read(read_addr[6]);    // ¶ÁĞÇÆÚ
+//  date_day    = ds1302_read(read_addr[3]);    // è¯»æ—¥
+//  date_month  = ds1302_read(read_addr[4]);    // è¯»æœˆ
+//  date_year   = ds1302_read(read_addr[5]);    // è¯»å¹´
+//  date_week   = ds1302_read(read_addr[6]);    // è¯»æ˜ŸæœŸ
 }
 
-// Ğ´Ê±¼ä
+/**
+ * @brief   å†™å…¥æ—¶é—´ï¼ˆæ—¶ åˆ†ï¼‰
+ */
 void write_time()
 {
-    ds1302_write(0x8e, 0x00); // ´ò¿ªĞ´±£»¤
+    ds1302_write(0x8e, 0x00); // æ‰“å¼€å†™ä¿æŠ¤
 
-//  ds1302_write(write_addr[0], time_sec);   // Ğ´Ãë
-    ds1302_write(write_addr[1], time_min);   // Ğ´·Ö
-    ds1302_write(write_addr[2], time_hour);  // Ğ´Ê±
-//  ds1302_write(write_addr[3], date_day);   // Ğ´ÈÕ
-//  ds1302_write(write_addr[4], date_month); // Ğ´ÔÂ
-//  ds1302_write(write_addr[5], date_year);  // Ğ´Äê
-//  ds1302_write(write_addr[6], date_week);  // Ğ´ĞÇÆÚ
+//  ds1302_write(write_addr[0], time_sec);   // å†™ç§’
+    ds1302_write(write_addr[1], time_min);   // å†™åˆ†
+    ds1302_write(write_addr[2], time_hour);  // å†™æ—¶
+//  ds1302_write(write_addr[3], date_day);   // å†™æ—¥
+//  ds1302_write(write_addr[4], date_month); // å†™æœˆ
+//  ds1302_write(write_addr[5], date_year);  // å†™å¹´
+//  ds1302_write(write_addr[6], date_week);  // å†™æ˜ŸæœŸ
 
-    ds1302_write(0xc2, alarm_hour); // Ğ´ÄÖÖÓÊ±
-    ds1302_write(0xc4, alarm_min);  // Ğ´ÄÖÖÓ·Ö
+//  ds1302_write(0xc2, alarm_hour); // å†™é—¹é’Ÿæ—¶
+//  ds1302_write(0xc4, alarm_min);  // å†™é—¹é’Ÿåˆ†
 
-    ds1302_write(0x8e, 0x80); // ¹Ø±ÕĞ´±£»¤
+    ds1302_write(0x8e, 0x80); // å…³é—­å†™ä¿æŠ¤
 }
 
-/* // ¶ÁÈ¡ÄÖÖÓÊ±¼ä
+/* 
+// è¯»å–é—¹é’Ÿæ—¶é—´
 void read_alarm()
 {
-    alarm_hour = ds1302_read(0xc3);   // ¶ÁÄÖÖÓÊ±
-    alarm_min = ds1302_read(0xc5);    // ¶ÁÄÖÖÓ·Ö
+    alarm_hour = ds1302_read(0xc3);   // è¯»é—¹é’Ÿæ—¶
+    alarm_min = ds1302_read(0xc5);    // è¯»é—¹é’Ÿåˆ†
 }
 */
 
-// Ğ´ ds1302 RAM
+/**
+ * @brief           å†™ DS1302 RAM
+ * 
+ * @param   addr    å†™å…¥å¯„å­˜å™¨åœ°å€
+ * @param   dat     å†™å…¥å…«ä½æ•°æ®  
+ */
 void ds1302_writeram(unsigned char addr, unsigned char dat)
 {
-    addr <<= 1;   // µØÖ·´ÓµÚ¶şÎ»¿ªÊ¼
-    addr &= 0xfe; // ×îµÍÎ»¸´Î» Ğ´ÃüÁî
-    addr |= 0xc0; // µØÖ·×î¸ßÁ½Î»Îª 1
+    addr <<= 1;   // åœ°å€ä»ç¬¬äºŒä½å¼€å§‹
+    addr &= 0xfe; // æœ€ä½ä½å¤ä½ å†™å‘½ä»¤
+    addr |= 0xc0; // åœ°å€æœ€é«˜ä¸¤ä½ä¸º 1
 
     ds1302_write(0x8e, 0x00);
     ds1302_write(addr, dat);
     ds1302_write(0x8e, 0x80);
 }
 
-// ¶Á ds1302 RAM
+/**
+ * @brief           è¯» DS1302 RAM
+ * 
+ * @param   addr    è¯»å–å¯„å­˜å™¨åœ°å€
+ * @return          è¯»å–åˆ°çš„å…«ä½æ•°æ®
+ */
 unsigned char ds1302_readram(unsigned char addr)
 {
-    addr <<= 1;   // µØÖ·´ÓµÚ¶şÎ»¿ªÊ¼
-    addr |= 0x01; // ×î¸ßÎ»ÖÃÎ» ¶ÁÃüÁî
-    addr |= 0xc0; // µØÖ·×î¸ßÁ½Î»Îª 1
+    addr <<= 1;   // åœ°å€ä»ç¬¬äºŒä½å¼€å§‹
+    addr |= 0x01; // æœ€é«˜ä½ç½®ä½ è¯»å‘½ä»¤
+    addr |= 0xc0; // åœ°å€æœ€é«˜ä¸¤ä½ä¸º 1
 
     return (ds1302_read(addr));
 }
 
-// ³õÊ¼»¯ ds1302 Ê±¼ä
+/**
+ * @brief   åˆå§‹åŒ– DS1302 æ—¶é—´
+ */
 void ds1302_init()
 {
     unsigned char i;
@@ -158,20 +199,24 @@ void ds1302_init()
         i = 3;
 
         ds1302_writeram(30, i);
-        ds1302_write(0x8e, 0x00); //´ò¿ªĞ´±£»¤
+        ds1302_write(0x8e, 0x00); //æ‰“å¼€å†™ä¿æŠ¤
 
         for (i = 0; i < 3; i++)
         {
-            ds1302_write(write_addr[i], init_ds[i]); // ×î¸ßÎ»ÖÃÎ» Ê¹ÄÜĞ¾Æ¬
+            ds1302_write(write_addr[i], init_ds[i]); // æœ€é«˜ä½ç½®ä½ ä½¿èƒ½èŠ¯ç‰‡
         }
 
-        ds1302_write(0x8e, 0x80); // ¹ØĞ´±£»¤
+        ds1302_write(0x8e, 0x80); // å…³å†™ä¿æŠ¤
     }
 }
 
+
+/**
+ * @brief   DS1302 IO åˆå§‹åŒ–
+ */
 void ds1302_init_io()
 {
-    // µÚÒ»´Î¶ÁĞ´ IO À­µÍ
+    // ç¬¬ä¸€æ¬¡è¯»å†™ IO æ‹‰ä½
     rst = 0;
     clk = 0;
     io = 0;

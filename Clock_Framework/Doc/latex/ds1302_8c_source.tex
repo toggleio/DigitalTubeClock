@@ -1,0 +1,171 @@
+\hypertarget{ds1302_8c_source}{}\doxysection{ds1302.\+c}
+\label{ds1302_8c_source}\index{Src/ds1302.c@{Src/ds1302.c}}
+\mbox{\hyperlink{ds1302_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00001}00001 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00016}00016 \textcolor{preprocessor}{\#include "{}ds1302.h"{}}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00018}\mbox{\hyperlink{ds1302_8c_ac9303e50f2245a0ec834e123e5c1f37f}{00018}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} \mbox{\hyperlink{ds1302_8c_ac9303e50f2245a0ec834e123e5c1f37f}{time\_sec}} = 0;     }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00019}\mbox{\hyperlink{ds1302_8c_a58470cbc5cc9b332af96052e55f3505a}{00019}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} \mbox{\hyperlink{ds1302_8c_a58470cbc5cc9b332af96052e55f3505a}{time\_min}} = 0;     }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00020}\mbox{\hyperlink{ds1302_8c_aa479cd29773f3e2dda5dc30a78508e26}{00020}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} \mbox{\hyperlink{ds1302_8c_aa479cd29773f3e2dda5dc30a78508e26}{time\_hour}} = 0;    }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00021}00021 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00022}\mbox{\hyperlink{ds1302_8c_a7c98803c6ac3c66ae98d5d3bd107c5ae}{00022}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} \mbox{\hyperlink{ds1302_8c_a7c98803c6ac3c66ae98d5d3bd107c5ae}{alarm\_min}} = 0;    }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00023}\mbox{\hyperlink{ds1302_8c_a1751afdca377b1e7626778e46ac89d32}{00023}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} \mbox{\hyperlink{ds1302_8c_a1751afdca377b1e7626778e46ac89d32}{alarm\_hour}} = 0;   }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00024}00024 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00025}\mbox{\hyperlink{ds1302_8c_a3e90f991d489985994745a8309a618e8}{00025}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} code \mbox{\hyperlink{ds1302_8c_a3e90f991d489985994745a8309a618e8}{write\_addr}}[] = \{0x80, 0x82, 0x84, 0x86, 0x88, 0x8c, 0x8a\}; }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00026}\mbox{\hyperlink{ds1302_8c_a35b2861fe98da42c805397c0b2a63563}{00026}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} code \mbox{\hyperlink{ds1302_8c_a35b2861fe98da42c805397c0b2a63563}{read\_addr}}[] = \{0x81, 0x83, 0x85, 0x87, 0x89, 0x8d, 0x8b\};  }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00027}00027 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00035}\mbox{\hyperlink{ds1302_8c_a2e39a7b8530857318c6824870021aa7c}{00035}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} code \mbox{\hyperlink{ds1302_8c_a2e39a7b8530857318c6824870021aa7c}{init\_ds}}[] = \{0x56, 0x34, 0x12, 0x10, 0x10, 0x21, 0x07\};}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00036}00036 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00038}00038 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00045}\mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{00045}} \textcolor{keywordtype}{void} \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} addr, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} dat)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00046}00046 \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00047}00047     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} i;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00048}00048 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00049}00049     rst = 1; \textcolor{comment}{// 复位线拉高}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00050}00050 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00051}00051     \textcolor{keywordflow}{for} (i = 0; i < 8; i++)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00052}00052     \{            \textcolor{comment}{// 低位在前}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00053}00053         clk = 0; \textcolor{comment}{// 时钟线拉低开始写数据}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00054}00054         io = addr \& 0x01;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00055}00055         addr >>= 1; \textcolor{comment}{// 地址右移一位}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00056}00056         clk = 1;    \textcolor{comment}{// 时钟线拉高}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00057}00057     \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00058}00058 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00059}00059     \textcolor{keywordflow}{for} (i = 0; i < 8; i++)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00060}00060     \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00061}00061         clk = 0; \textcolor{comment}{// 时钟线拉低开始写数据}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00062}00062         io = dat \& 0x01;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00063}00063         dat >>= 1; \textcolor{comment}{// 数据右移一位}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00064}00064         clk = 1;   \textcolor{comment}{// 时钟线拉高}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00065}00065     \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00066}00066 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00067}00067     rst = 0; \textcolor{comment}{// 复位线合低}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00068}00068     clk = 0;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00069}00069     io = 0;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00070}00070 \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00071}00071 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00072}00072 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00079}\mbox{\hyperlink{ds1302_8c_a2f9cdd5ac22c8bdeca58736c7c7c2ea3}{00079}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} \mbox{\hyperlink{ds1302_8c_a2f9cdd5ac22c8bdeca58736c7c7c2ea3}{ds1302\_read}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} addr)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00080}00080 \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00081}00081     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} value, i;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00082}00082 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00083}00083     rst = 1; \textcolor{comment}{// 复位线拉高}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00084}00084 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00085}00085     \textcolor{keywordflow}{for} (i = 0; i < 8; i++)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00086}00086     \{            \textcolor{comment}{// 低位在前}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00087}00087         clk = 0; \textcolor{comment}{// 时钟线拉低开始写数据}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00088}00088         io = addr \& 0x01;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00089}00089         addr >>= 1; \textcolor{comment}{// 地址右移一位}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00090}00090         clk = 1;    \textcolor{comment}{// 时钟线拉高}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00091}00091     \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00092}00092 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00093}00093     \textcolor{keywordflow}{for} (i = 0; i < 8; i++)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00094}00094     \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00095}00095         clk = 0; \textcolor{comment}{// 时钟线拉低开始读数据}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00096}00096         value >>= 1;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00097}00097         \textcolor{keywordflow}{if} (io == 1)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00098}00098             value |= 0x80;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00099}00099         clk = 1; \textcolor{comment}{// 时钟线拉高}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00100}00100     \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00101}00101 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00102}00102     rst = 0; \textcolor{comment}{// 复位线拉低}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00103}00103     clk = 0;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00104}00104     io = 0;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00105}00105 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00106}00106     \textcolor{keywordflow}{return} value; \textcolor{comment}{// 返回数据}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00107}00107 \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00108}00108 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00112}\mbox{\hyperlink{ds1302_8c_a164a23460affd2b08fac6d2940a72cbe}{00112}} \textcolor{keywordtype}{void} \mbox{\hyperlink{ds1302_8c_a164a23460affd2b08fac6d2940a72cbe}{read\_time}}()}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00113}00113 \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00114}00114     \mbox{\hyperlink{ds1302_8c_ac9303e50f2245a0ec834e123e5c1f37f}{time\_sec}} = \mbox{\hyperlink{ds1302_8c_a2f9cdd5ac22c8bdeca58736c7c7c2ea3}{ds1302\_read}}(\mbox{\hyperlink{ds1302_8c_a35b2861fe98da42c805397c0b2a63563}{read\_addr}}[0]);  \textcolor{comment}{// 读秒}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00115}00115     \mbox{\hyperlink{ds1302_8c_a58470cbc5cc9b332af96052e55f3505a}{time\_min}} = \mbox{\hyperlink{ds1302_8c_a2f9cdd5ac22c8bdeca58736c7c7c2ea3}{ds1302\_read}}(\mbox{\hyperlink{ds1302_8c_a35b2861fe98da42c805397c0b2a63563}{read\_addr}}[1]);  \textcolor{comment}{// 读分}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00116}00116     \mbox{\hyperlink{ds1302_8c_aa479cd29773f3e2dda5dc30a78508e26}{time\_hour}} = \mbox{\hyperlink{ds1302_8c_a2f9cdd5ac22c8bdeca58736c7c7c2ea3}{ds1302\_read}}(\mbox{\hyperlink{ds1302_8c_a35b2861fe98da42c805397c0b2a63563}{read\_addr}}[2]); \textcolor{comment}{// 读时}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00117}00117 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00118}00118 \textcolor{comment}{//  date\_day    = ds1302\_read(read\_addr[3]);    // 读日}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00119}00119 \textcolor{comment}{//  date\_month  = ds1302\_read(read\_addr[4]);    // 读月}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00120}00120 \textcolor{comment}{//  date\_year   = ds1302\_read(read\_addr[5]);    // 读年}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00121}00121 \textcolor{comment}{//  date\_week   = ds1302\_read(read\_addr[6]);    // 读星期}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00122}00122 \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00123}00123 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00127}\mbox{\hyperlink{ds1302_8c_a9ac8aa77f7621bc75420080365182d86}{00127}} \textcolor{keywordtype}{void} \mbox{\hyperlink{ds1302_8c_a9ac8aa77f7621bc75420080365182d86}{write\_time}}()}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00128}00128 \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00129}00129     \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(0x8e, 0x00); \textcolor{comment}{// 打开写保护}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00130}00130 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00131}00131 \textcolor{comment}{//  ds1302\_write(write\_addr[0], time\_sec);   // 写秒}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00132}00132     \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(\mbox{\hyperlink{ds1302_8c_a3e90f991d489985994745a8309a618e8}{write\_addr}}[1], \mbox{\hyperlink{ds1302_8c_a58470cbc5cc9b332af96052e55f3505a}{time\_min}});   \textcolor{comment}{// 写分}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00133}00133     \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(\mbox{\hyperlink{ds1302_8c_a3e90f991d489985994745a8309a618e8}{write\_addr}}[2], \mbox{\hyperlink{ds1302_8c_aa479cd29773f3e2dda5dc30a78508e26}{time\_hour}});  \textcolor{comment}{// 写时}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00134}00134 \textcolor{comment}{//  ds1302\_write(write\_addr[3], date\_day);   // 写日}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00135}00135 \textcolor{comment}{//  ds1302\_write(write\_addr[4], date\_month); // 写月}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00136}00136 \textcolor{comment}{//  ds1302\_write(write\_addr[5], date\_year);  // 写年}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00137}00137 \textcolor{comment}{//  ds1302\_write(write\_addr[6], date\_week);  // 写星期}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00138}00138 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00139}00139 \textcolor{comment}{//  ds1302\_write(0xc2, alarm\_hour); // 写闹钟时}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00140}00140 \textcolor{comment}{//  ds1302\_write(0xc4, alarm\_min);  // 写闹钟分}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00141}00141 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00142}00142     \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(0x8e, 0x80); \textcolor{comment}{// 关闭写保护}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00143}00143 \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00144}00144 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00145}00145 \textcolor{comment}{/* }}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00146}00146 \textcolor{comment}{// 读取闹钟时间}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00147}00147 \textcolor{comment}{void read\_alarm()}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00148}00148 \textcolor{comment}{\{}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00149}00149 \textcolor{comment}{    alarm\_hour = ds1302\_read(0xc3);   // 读闹钟时}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00150}00150 \textcolor{comment}{    alarm\_min = ds1302\_read(0xc5);    // 读闹钟分}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00151}00151 \textcolor{comment}{\}}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00152}00152 \textcolor{comment}{*/}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00153}00153 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00160}\mbox{\hyperlink{ds1302_8c_a97f9f9c9cd86348ccb761e1212b91282}{00160}} \textcolor{keywordtype}{void} \mbox{\hyperlink{ds1302_8c_a97f9f9c9cd86348ccb761e1212b91282}{ds1302\_writeram}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} addr, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} dat)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00161}00161 \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00162}00162     addr <<= 1;   \textcolor{comment}{// 地址从第二位开始}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00163}00163     addr \&= 0xfe; \textcolor{comment}{// 最低位复位 写命令}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00164}00164     addr |= 0xc0; \textcolor{comment}{// 地址最高两位为 1}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00165}00165 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00166}00166     \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(0x8e, 0x00);}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00167}00167     \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(addr, dat);}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00168}00168     \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(0x8e, 0x80);}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00169}00169 \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00170}00170 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00177}\mbox{\hyperlink{ds1302_8c_a8d56baa401b69513613f3b60bf4f063b}{00177}} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} \mbox{\hyperlink{ds1302_8c_a8d56baa401b69513613f3b60bf4f063b}{ds1302\_readram}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} addr)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00178}00178 \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00179}00179     addr <<= 1;   \textcolor{comment}{// 地址从第二位开始}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00180}00180     addr |= 0x01; \textcolor{comment}{// 最高位置位 读命令}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00181}00181     addr |= 0xc0; \textcolor{comment}{// 地址最高两位为 1}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00182}00182 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00183}00183     \textcolor{keywordflow}{return} (\mbox{\hyperlink{ds1302_8c_a2f9cdd5ac22c8bdeca58736c7c7c2ea3}{ds1302\_read}}(addr));}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00184}00184 \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00185}00185 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00189}\mbox{\hyperlink{ds1302_8c_a0665eb059e742e4bb5a419144336e147}{00189}} \textcolor{keywordtype}{void} \mbox{\hyperlink{ds1302_8c_a0665eb059e742e4bb5a419144336e147}{ds1302\_init}}()}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00190}00190 \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00191}00191     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} i;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00192}00192 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00193}00193     \mbox{\hyperlink{ds1302_8c_ac9acabbd906bfaedefa04a8fe81bf91c}{ds1302\_init\_io}}();}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00194}00194 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00195}00195     i = \mbox{\hyperlink{ds1302_8c_a8d56baa401b69513613f3b60bf4f063b}{ds1302\_readram}}(30);}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00196}00196 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00197}00197     \textcolor{keywordflow}{if} (i != 3)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00198}00198     \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00199}00199         i = 3;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00200}00200 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00201}00201         \mbox{\hyperlink{ds1302_8c_a97f9f9c9cd86348ccb761e1212b91282}{ds1302\_writeram}}(30, i);}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00202}00202         \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(0x8e, 0x00); \textcolor{comment}{//打开写保护}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00203}00203 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00204}00204         \textcolor{keywordflow}{for} (i = 0; i < 3; i++)}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00205}00205         \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00206}00206             \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(\mbox{\hyperlink{ds1302_8c_a3e90f991d489985994745a8309a618e8}{write\_addr}}[i], \mbox{\hyperlink{ds1302_8c_a2e39a7b8530857318c6824870021aa7c}{init\_ds}}[i]); \textcolor{comment}{// 最高位置位 使能芯片}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00207}00207         \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00208}00208 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00209}00209         \mbox{\hyperlink{ds1302_8c_a2f465ac3edd01714fa97bb5a1f7a6575}{ds1302\_write}}(0x8e, 0x80); \textcolor{comment}{// 关写保护}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00210}00210     \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00211}00211 \}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00212}00212 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00213}00213 }
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00217}\mbox{\hyperlink{ds1302_8c_ac9acabbd906bfaedefa04a8fe81bf91c}{00217}} \textcolor{keywordtype}{void} \mbox{\hyperlink{ds1302_8c_ac9acabbd906bfaedefa04a8fe81bf91c}{ds1302\_init\_io}}()}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00218}00218 \{}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00219}00219     \textcolor{comment}{// 第一次读写 IO 拉低}}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00220}00220     rst = 0;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00221}00221     clk = 0;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00222}00222     io = 0;}
+\DoxyCodeLine{\Hypertarget{ds1302_8c_source_l00223}00223 \}}
+
+\end{DoxyCode}

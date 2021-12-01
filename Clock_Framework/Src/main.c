@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file           : main.c
-  * @version        : v1.0
-  * @author         : Xiaohei
-  * @date           : 2021-11-20
-  * @brief          : Main program body
+  * @file            main.c
+  * @version         v1.0
+  * @author          Xiaohei
+  * @date            2021-11-20
+  * @brief           Main program body
   ******************************************************************************
   * @attention
   *
@@ -15,67 +15,87 @@
 
 #include "main.h"
 
-// ´ò¿ª·äÃùÆ÷
-//#define ENABLE_BELL
-
-// Ò³ÃæÊıÁ¿
+/// é¡µé¢æ€»æ•°é‡
 #define NUM_PAGE 9
 
-// Ê±¼ä¶¯»­ÊıÁ¿
+/// æ—¶é—´åŠ¨ç”»æ€»æ•°é‡
 #define NUM_TIME_ANIMATE 2
 
-// ÍÑ»ú¶¯»­ÊıÁ¿
+/// è„±æœºåŠ¨ç”»æ€»æ•°é‡
 #define NUM_OFFLINE_ANIMATE 2
 
-// ¶¨Ê±Æ÷¼Æ´Î
+/// å®šæ—¶å™¨è®¡æ¬¡ï¼ˆä¸­æ–­ä¸€æ¬¡åŠ ä¸€ï¼‰
 unsigned char timer_cnt = 0;
 
-// ¶¨Ê±Æ÷¼Æ´Î
+/// å®šæ—¶å™¨è®¡æ¬¡ï¼ˆä¸­æ–­åæ¬¡åŠ ä¸€ï¼‰
 unsigned char tick = 0;
 
-// ÏÔÊ¾ÑÓÊ± ¿ØÖÆÁÁ¶È
+/// æ˜¾ç¤ºå»¶æ—¶ ç”¨äºæ§åˆ¶äº®åº¦
 unsigned int light = 8;
 
-// ´æ´¢ÎÂ¶È½á¹û
+/// å­˜å‚¨æ¸©åº¦ç»“æœ
 unsigned int temperature = 20;
 
-// ÄÖÖÓ¿ª¹Ø
+/// é—¹é’Ÿå¼€å…³
 bit alarm_control = 0;
 
-// ÁÁ¶Èµ÷½Ú¿ª¹Ø
+/// äº®åº¦è°ƒèŠ‚å¼€å…³
 bit light_control = 0;
 
-// Ê±¼ä¶¯»­
-// ¿ÉÔÚ´Ë´¦Ìí¼ÓÃ¿¸ö¶¯»­µÄ×¢ÊÍ
-// 0: ÏÔÊ¾Ãë
-// 1: ·´É«ÏÔÊ¾Ãë
+/**
+ * @brief   æ—¶é—´åŠ¨ç”»çš„åºå·
+ * 
+ * å¯åœ¨æ­¤å¤„æ·»åŠ æ¯ä¸ªåŠ¨ç”»çš„æ³¨é‡Š
+ * 
+ * 0: æ˜¾ç¤ºç§’
+ * 
+ * 1: åè‰²æ˜¾ç¤ºç§’
+ */
 unsigned char time_animate = 0;
 
-// ÍÑ»ú¶¯»­
-// ¿ÉÔÚ´Ë´¦Ìí¼ÓÃ¿¸ö¶¯»­µÄ×¢ÊÍ
-// 0: ÕıÏòÏÔÊ¾¶¯»­1
-// 1: ·´ÏòÏÔÊ¾¶¯»­1
+/**
+ * @brief   è„±æœºåŠ¨ç”» çš„åºå·
+ * 
+ * å¯åœ¨æ­¤å¤„æ·»åŠ æ¯ä¸ªåŠ¨ç”»çš„æ³¨é‡Š
+ * 
+ * 0: æ­£å‘æ˜¾ç¤ºåŠ¨ç”» 1
+ * 
+ * 1: åå‘æ˜¾ç¤ºåŠ¨ç”» 1
+ */
 unsigned char offline_animate = 0;
 
-// µ±Ç°Ò³ÃæĞòºÅ
-// 0: ÏÔÊ¾Ê±¼ä Ê±¼ä¶¯»­
-// 1: µ÷Õû·ÖÖÓ
-// 2: µ÷ÕûĞ¡Ê±
-// 3: µ÷ÕûÄÖÖÓ·ÖÖÓ
-// 4: µ÷ÕûÄÖÖÓĞ¡Ê±
-// 5: ÄÖÖÓ¿ª¹Ø
-// 6: ÏÔÊ¾Ñ§ºÅ ÍÑ»ú¶¯»­
-// 7: ÏÔÊ¾ÎÂ¶È
-// 8: ¹âÃô¿ª¹Ø
+/**
+ * @brief   å½“å‰é¡µé¢åºå·
+ * 
+ *  0: æ˜¾ç¤ºæ—¶é—´ æ—¶é—´åŠ¨ç”»
+ * 
+ *  1: è°ƒæ•´åˆ†é’Ÿ
+ * 
+ *  2: è°ƒæ•´å°æ—¶
+ * 
+ *  3: è°ƒæ•´é—¹é’Ÿåˆ†é’Ÿ
+ * 
+ *  4: è°ƒæ•´é—¹é’Ÿå°æ—¶
+ * 
+ *  5: é—¹é’Ÿå¼€å…³
+ * 
+ *  6: æ˜¾ç¤ºå­¦å·ä»¥åŠè„±æœºåŠ¨ç”»
+ * 
+ *  7: æ˜¾ç¤ºæ¸©åº¦
+ * 
+ *  8: å…‰æ•å¼€å…³
+ */
 char page = 0;
 
-// °´¼üÉ¨Ãè
+/**
+ * @brief   æŒ‰é”®æ‰«æ
+ */
 void keyScan()
 {
-    // ½ûÓÃ ADC ×ª»»
+    // ç¦ç”¨ ADC è½¬æ¢
     disableAdc();
 
-    // ¹ØÄÖÖÓ
+    // å…³é—¹é’Ÿ
     if (alarm_control == 1)
     {
         if (time_hour == alarm_hour && time_min == alarm_min)
@@ -84,44 +104,36 @@ void keyScan()
         }
     }
 
-    // °´¼ü 1 °´ÏÂ
+    // æŒ‰é”® 1 æŒ‰ä¸‹
     if (BTN1 == 0)
     {
         delay(20);
 
         if (BTN1 == 0)
         {
-#ifdef ENABLE_BELL
-            // ·äÃùÆ÷Ïì
-            bell = 0;
-#endif
-            // Ìø×ªÏÂÒ»¸öÒ³Ãæ
+            // è·³è½¬ä¸‹ä¸€ä¸ªé¡µé¢
             page++;
 
             if (page == 3)
             {
-                // Ğ´ÈëÉèÖÃµÄÊ±¼ä
+                // å†™å…¥è®¾ç½®çš„æ—¶é—´
                 write_time();
             }
 
-            // µ½×îºóÒ»¸öÒ³ÃæÊ±·µ»ØÒ³Ãæ 0
+            // åˆ°æœ€åä¸€ä¸ªé¡µé¢æ—¶è¿”å›é¡µé¢ 0
             if (page == NUM_PAGE)
             {
                 page = 0;
             }
 
-            // µÈ´ı°´¼üËÉ¿ª
+            // ç­‰å¾…æŒ‰é”®æ¾å¼€
             while (BTN1 == 0)
                 ;
-#ifdef ENABLE_BELL
-            // ¹Ø±Õ·äÃùÆ÷
-            bell = 1;
-#endif
         }
         delay(10);
     }
 
-    // Ê±¼ä½çÃæ °´¼üÇĞ»» LED Ê±¼ä¶¯»­´¦Àí
+    // æ—¶é—´ç•Œé¢ æŒ‰é”®åˆ‡æ¢ LED æ—¶é—´åŠ¨ç”»å¤„ç†
     if (page == 0)
     {
         if (BTN2 == 0)
@@ -130,58 +142,44 @@ void keyScan()
 
             if (BTN2 == 0)
             {
-#ifdef ENABLE_BELL
-                bell = 0;
-#endif
                 time_animate = (time_animate + 1) % NUM_TIME_ANIMATE;
                 while (BTN2 == 0)
                     ;
-#ifdef ENABLE_BELL
-                bell = 1;
-#endif
             }
             delay(10);
         }
     }
 
-    // ÉèÖÃ·ÖÖÓ½çÃæ °´¼ü´¦Àí
+    // è®¾ç½®åˆ†é’Ÿç•Œé¢ æŒ‰é”®å¤„ç†
     if (page == 1)
     {
-        // °´¼ü 2 °´ÏÂ
+        // æŒ‰é”® 2 æŒ‰ä¸‹
         if (BTN2 == 0)
         {
             delay(20);
 
             if (BTN2 == 0)
             {
-#ifdef ENABLE_BELL
-                // ·äÃùÆ÷Ïì
-                bell = 0;
-#endif
-                // ·ÖÖÓ³¬¹ı 59 »Ö¸´ 0
+                // åˆ†é’Ÿè¶…è¿‡ 59 æ¢å¤ 0
                 if (time_min >= 0x60)
                     time_min = 0;
 
-                // ÉèÖÃ·ÖÖÓ¼Ó 1
+                // è®¾ç½®åˆ†é’ŸåŠ  1
                 time_min = time_min + 0x01;
 
-                // Ê®Áù½øÖÆ×ª»»Îª BCD
+                // åå…­è¿›åˆ¶è½¬æ¢ä¸º BCD
                 if ((time_min & 0x0f) >= 0x0a)
                     time_min = (time_min & 0xf0) + 0x10;
 
-                // µÈ´ıËÉ¿ª
+                // ç­‰å¾…æ¾å¼€
                 while (BTN2 == 0)
                     ;
-#ifdef ENABLE_BELL
-                // ¹Ø±Õ·äÃùÆ÷
-                bell = 1;
-#endif
             }
             delay(10);
         }
     }
 
-    // ÉèÖÃĞ¡Ê±½çÃæ °´¼ü´¦Àí
+    // è®¾ç½®å°æ—¶ç•Œé¢ æŒ‰é”®å¤„ç†
     if (page == 2)
     {
         if (BTN2 == 0)
@@ -190,9 +188,6 @@ void keyScan()
 
             if (BTN2 == 0)
             {
-#ifdef ENABLE_BELL
-                bell = 0;
-#endif
                 time_hour += 0x01;
                 if ((time_hour & 0x0f) >= 0x0a)
                     time_hour = (time_hour & 0xf0) + 0x10;
@@ -200,58 +195,47 @@ void keyScan()
                     time_hour = 0;
                 while (BTN2 == 0)
                     ;
-#ifdef ENABLE_BELL
-                bell = 1;
-#endif
             }
             delay(10);
         }
     }
 
-    // ÉèÖÃÄÖÖÓ·ÖÖÓ½çÃæ °´¼ü´¦Àí
+    // è®¾ç½®é—¹é’Ÿåˆ†é’Ÿç•Œé¢ æŒ‰é”®å¤„ç†
     if (page == 3)
     {
-        // °´¼ü 2 °´ÏÂ
+        // æŒ‰é”® 2 æŒ‰ä¸‹
         if (BTN2 == 0)
         {
             delay(20);
 
             if (BTN2 == 0)
             {
-#ifdef ENABLE_BELL
-                // ·äÃùÆ÷Ïì
-                bell = 0;
-#endif
-                // ·ÖÖÓ³¬¹ı 59 »Ö¸´ 0
+                // åˆ†é’Ÿè¶…è¿‡ 59 æ¢å¤ 0
                 if (alarm_min >= 0x60)
                     alarm_min = 0;
 
-                // ÉèÖÃ·ÖÖÓ¼Ó 1
+                // è®¾ç½®åˆ†é’ŸåŠ  1
                 alarm_min = alarm_min + 0x01;
 
-                // Ê®Áù½øÖÆ×ª»»Îª BCD
+                // åå…­è¿›åˆ¶è½¬æ¢ä¸º BCD
                 if ((alarm_min & 0x0f) >= 0x0a)
                     alarm_min = (alarm_min & 0xf0) + 0x10;
 
-                // µÈ´ıËÉ¿ª
+                // ç­‰å¾…æ¾å¼€
                 while (BTN2 == 0)
                     ;
-#ifdef ENABLE_BELL
-                // ¹Ø±Õ·äÃùÆ÷
-                bell = 1;
-#endif
             }
             delay(10);
         }
     }
 
-    // ÉèÖÃÄÖÖÓĞ¡Ê±½çÃæ °´¼ü´¦Àí
+    // è®¾ç½®é—¹é’Ÿå°æ—¶ç•Œé¢ æŒ‰é”®å¤„ç†
     if (page == 4)
     {
         //todo
     }
 
-    // ÉèÖÃÄÖÖÓ¿ª¹Ø½çÃæ °´¼ü´¦Àí
+    // è®¾ç½®é—¹é’Ÿå¼€å…³ç•Œé¢ æŒ‰é”®å¤„ç†
     if (page == 5)
     {
         if (BTN2 == 0)
@@ -260,63 +244,59 @@ void keyScan()
 
             if (BTN2 == 0)
             {
-#ifdef ENABLE_BELL
-                bell = 0;
-#endif
                 alarm_control = !alarm_control;
                 while (BTN2 == 0)
                     ;
-#ifdef ENABLE_BELL
-                bell = 1;
-#endif
             }
             delay(10);
         }
     }
 
-    // Ñ§ºÅ½çÃæ °´¼üÇĞ»» LED ÍÑ»ú¶¯»­´¦Àí
+    // å­¦å·ç•Œé¢ æŒ‰é”®åˆ‡æ¢ LED è„±æœºåŠ¨ç”»å¤„ç†
     if (page == 6)
     {
         //todo
     }
 
-    // ÉèÖÃ¹â¿Ø¿ª¹Ø½çÃæ °´¼ü´¦Àí
+    // è®¾ç½®å…‰æ§å¼€å…³ç•Œé¢ æŒ‰é”®å¤„ç†
     if (page == 8)
     {
         //todo
     }
 
-    // Ê¹ÄÜ ADC ×ª»»
+    // ä½¿èƒ½ ADC è½¬æ¢
     enableAdc();
 }
 
-// Ö÷º¯Êı
+/**
+ * @brief   ä¸»å‡½æ•°
+ */
 void main()
 {
     unsigned char i = 0;
 
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     systemInit();
 
-    // Ö÷Ñ­»·
+    // ä¸»å¾ªç¯
     while (1)
     {
-        // °´¼üÉ¨Ãè
+        // æŒ‰é”®æ‰«æ
         keyScan();
 
-        // ÏÔÊ¾Ê±¼ä½çÃæ
+        // æ˜¾ç¤ºæ—¶é—´ç•Œé¢
         if (page == 0)
         {
-            // ¶ÁÈ¡Ê±¼ä
+            // è¯»å–æ—¶é—´
             read_time();
 
-            // ½âÎöÊ±¼ä
+            // è§£ææ—¶é—´
             display_array[0] = time_hour / 16;
             display_array[1] = time_hour % 16;
             display_array[2] = time_min / 16;
             display_array[3] = time_min % 16;
 
-            // Ìî³ä LED Êı×é
+            // å¡«å…… LED æ•°ç»„
             if (time_animate == 0)
             {
                 ledAllOff();
@@ -333,7 +313,7 @@ void main()
             }
         }
 
-        // ÉèÖÃÊ±¼ä ·ÖÖÓ
+        // è®¾ç½®æ—¶é—´ åˆ†é’Ÿ
         if (page == 1)
         {
             ledAllOff();
@@ -352,7 +332,7 @@ void main()
             display_array[1] = time_hour % 16;
         }
 
-        // ÉèÖÃÊ±¼ä Ğ¡Ê±
+        // è®¾ç½®æ—¶é—´ å°æ—¶
         if (page == 2)
         {
             ledAllOff();
@@ -371,7 +351,7 @@ void main()
             }
         }
 
-        // ÉèÖÃÄÖÖÓÊ±¼ä ·ÖÖÓ
+        // è®¾ç½®é—¹é’Ÿæ—¶é—´ åˆ†é’Ÿ
         if (page == 3)
         {
             ledAllOff();
@@ -391,7 +371,7 @@ void main()
             display_array[1] = alarm_hour % 16;
         }
 
-        // ÉèÖÃÄÖÖÓÊ±¼ä Ğ¡Ê±
+        // è®¾ç½®é—¹é’Ÿæ—¶é—´ å°æ—¶
         if (page == 4)
         {
             ledAllOff();
@@ -411,7 +391,7 @@ void main()
             }
         }
 
-        // ÄÖÖÓ¿ª¹Ø
+        // é—¹é’Ÿå¼€å…³
         if (page == 5)
         {
             ledAllOff();
@@ -422,7 +402,7 @@ void main()
             display_array[3] = alarm_control;
         }
 
-        // ÏÔÊ¾Ñ§ºÅ
+        // æ˜¾ç¤ºå­¦å·
         if (page == 6)
         {
             display_array[0] = _SPACE;
@@ -436,7 +416,7 @@ void main()
                 i = (i + 1) % 15;
             }
 
-            // Ìî³ä LED Êı×é
+            // å¡«å…… LED æ•°ç»„
             if (offline_animate == 0)
             {
                 ledAllOff();
@@ -459,7 +439,7 @@ void main()
             }
         }
 
-        // ÏÔÊ¾ÎÂ¶È
+        // æ˜¾ç¤ºæ¸©åº¦
         if (page == 7)
         {
             ledAllOff();
@@ -472,7 +452,7 @@ void main()
             display_array[3] = _C;
         }
 
-        // ¹â¿Ø¿ª¹Ø
+        // å…‰æ§å¼€å…³
         if (page == 8)
         {
             ledAllOff();
@@ -483,7 +463,7 @@ void main()
             display_array[3] = light_control;
         }
 
-        // ¹â¿ØÅĞ¶Ï
+        // å…‰æ§åˆ¤æ–­
         if (light_control == 1)
         {
             //todo
@@ -493,27 +473,29 @@ void main()
             light = 8;
         }
 
-        // ÏÔÊ¾
+        // æ˜¾ç¤º
         display();
         delay(light);
     }
 }
 
-// ¶¨Ê±Æ÷ 1 ÖĞ¶Ï
-void intTimer1() interrupt 1
+/**
+ * @brief   å®šæ—¶å™¨ 0 ä¸­æ–­æœåŠ¡å‡½æ•°
+ */
+void intTimer0() interrupt 1
 {
-    TL0 = (65536 - 20000) / 256; // ÉèÖÃ¶¨Ê±³õÖµ
-    TH0 = (65536 - 20000) % 256; // ÉèÖÃ¶¨Ê±³õÖµ
+    TL0 = (65536 - 20000) / 256; // è®¾ç½®å®šæ—¶åˆå€¼
+    TH0 = (65536 - 20000) % 256; // è®¾ç½®å®šæ—¶åˆå€¼
 
     timer_cnt++;
 
-    // ½Ï¿ìµÄÊ±ÖÓ ÓÃÓÚ¶¯»­ÏÔÊ¾
+    // è¾ƒå¿«çš„æ—¶é’Ÿ ç”¨äºåŠ¨ç”»æ˜¾ç¤º
     if (timer_cnt % 10 == 0)
     {
         tick = 1;
     }
 
-    // Ã°ºÅÉÁË¸ÓëÄÖÖÓÅĞ¶Ï
+    // å†’å·é—ªçƒä¸é—¹é’Ÿåˆ¤æ–­
     if (timer_cnt == 40)
     {
         timer_cnt = 0;
@@ -527,7 +509,7 @@ void intTimer1() interrupt 1
             blink = 1;
         }
 
-        // ÄÖÖÓ¹¦ÄÜ
+        // é—¹é’ŸåŠŸèƒ½
         if (alarm_control == 1)
         {
             if (time_hour == alarm_hour && time_min == alarm_min)

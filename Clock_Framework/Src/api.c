@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file           : api.c
-  * @version        : v1.0
-  * @author         : Xiaohei
-  * @date           : 2021-11-20
-  * @brief          : Api program body
+  * @file            api.c
+  * @version         v1.0
+  * @author          Xiaohei
+  * @date            2021-11-20
+  * @brief           Api program body
   ******************************************************************************
   * @attention
   *
@@ -15,24 +15,42 @@
 
 #include "api.h"
 
-// ÊıÂë¹Ü¶ÎÑ¡Âë
-// 0 1 2 3 4 5 6 7 8 9 SPACE C
+/**
+ * @brief æ•°ç ç®¡æ®µé€‰ç 
+ * 
+ * åˆ†åˆ«ä¸ºï¼š 0 1 2 3 4 5 6 7 8 9 SPACE C
+ * 
+ * ç©ºæ ¼ä¸æ˜¾ç¤ºï¼ŒC æ˜¾ç¤ºå­—æ¯ C
+ */
 unsigned char num_seg_sel[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90, 0xff, 0xc6};
 
-// ÖÜÎ§ LED ÏÔÊ¾Êı×é
+/**
+ * @brief å‘¨å›´ LED æ˜¾ç¤ºæ•°ç»„
+ * 
+ * å…± 8 ä¸ª byte 
+ * 
+ * æ¯ä¸ª byte æ§åˆ¶ 8 ä¸ª LED
+ */
 unsigned char led_array[8] = {0};
 
-// ÊıÂë¹ÜÏÔÊ¾ÄÚÈİ
-// ´Ó×óµ½ÓÒÏÂ±ê·Ö±ğÎª 0 1 2 3
+/**
+ * @brief æ•°ç ç®¡æ˜¾ç¤ºå†…å®¹
+ * 
+ * ä¸‹æ ‡ 0 1 2 3 åˆ†åˆ«å¯¹åº”ä»å·¦åˆ°å³å››ä¸ªæ•°ç ç®¡
+ */
 unsigned char display_array[4] = {0};
 
-// Ã°ºÅÉÁË¸¿ØÖÆ±êÖ¾
+/// å†’å·é—ªçƒæ§åˆ¶æ ‡å¿—
 char blink = 1;
 
-// ´æ´¢ ADC ×ª»»½á¹û
+/// å­˜å‚¨ ADC è½¬æ¢ç»“æœ
 unsigned int adc_result = 0;
 
-// ¶ÌÔİ·Ç¾«È·ÑÓÊ±
+/**
+ * @brief çŸ­æš‚éç²¾ç¡®å»¶æ—¶
+ * 
+ * @param t å»¶æ—¶æ—¶é—´
+ */
 void delay(unsigned int t)
 {
     unsigned char i;
@@ -41,7 +59,12 @@ void delay(unsigned int t)
             ;
 }
 
-// BCD ×ª HEX
+/**
+ * @brief BCD è½¬ HEX
+ * 
+ * @param bcd BCD è¡¨ç¤º
+ * @return HEX è¡¨ç¤º
+ */
 unsigned char bcd2hex(unsigned char bcd)
 {
     unsigned char temp;
@@ -53,27 +76,31 @@ unsigned char bcd2hex(unsigned char bcd)
     return (bcd * 10 + temp);
 }
 
-// ¶¨Ê±Æ÷³õÊ¼»¯
+/**
+ * @brief å®šæ—¶å™¨åˆå§‹åŒ–
+ */
 void timerInit()
 {
     TMOD = 0x01;
-    TL0 = (65536 - 20000) / 256; // ÉèÖÃ¶¨Ê±³õÖµ
-    TH0 = (65536 - 20000) % 256; // ÉèÖÃ¶¨Ê±³õÖµ
+    TL0 = (65536 - 20000) / 256; // è®¾ç½®å®šæ—¶åˆå€¼
+    TH0 = (65536 - 20000) % 256; // è®¾ç½®å®šæ—¶åˆå€¼
     ET0 = 1;
     TR0 = 1;
     EA = 1;
 }
 
-// ÏµÍ³³õÊ¼»¯
+/**
+ * @brief ç³»ç»Ÿåˆå§‹åŒ–
+ */
 void systemInit()
 {
-    // ¶¨Ê±Æ÷³õÊ¼»¯
+    // å®šæ—¶å™¨åˆå§‹åŒ–
     timerInit();
 
-    // ÍâÉè³õÊ¼»¯
+    // å¤–è®¾åˆå§‹åŒ–
     ds1302_init();
 
-    // ¶Ë¿Ú³õÊ¼»¯
+    // ç«¯å£åˆå§‹åŒ–
     P1M0 = 0xff;
     P1M1 = 0x00;
     P2M0 = 0xff;
@@ -84,59 +111,71 @@ void systemInit()
     P5M1 = 0x00;
 }
 
-// Çå³ı LED ÏÔÊ¾
+/**
+ * @brief æ¸…é™¤ LED æ˜¾ç¤º
+ */
 void ledAllOff()
 {
     unsigned char i = 0;
 
     for (i = 0; i < 8; i++)
     {
-        // È«²¿Ï¨Ãğ
+        // å…¨éƒ¨ç†„ç­
         led_array[i] = 0xff;
     }
 }
 
-// µãÁÁÈ«²¿ LED
+/**
+ * @brief ç‚¹äº®å…¨éƒ¨ LED
+ */
 void ledAllOn()
 {
     unsigned char i = 0;
 
     for (i = 0; i < 8; i++)
     {
-        // È«²¿´ò¿ª
+        // å…¨éƒ¨æ‰“å¼€
         led_array[i] = 0x00;
     }
 }
 
-// Ö¸¶¨ LED ´ò¿ªÏÔÊ¾
-// index: LED Ë÷Òı 0-59
+/**
+ * @brief æŒ‡å®š LED æ‰“å¼€æ˜¾ç¤º
+ * 
+ * @param index LED ç´¢å¼• 0-59
+ */
 void setLed(unsigned char index)
 {
     index = (index + 59) % 60;
     reset_bit(led_array[index / 8], index % 8);
 }
 
-// Ö¸¶¨ LED ¹Ø±ÕÏÔÊ¾
-// index: LED Ë÷Òı 0-59
+/**
+ * @brief æŒ‡å®š LED å…³é—­æ˜¾ç¤º
+ * 
+ * @param index LED ç´¢å¼• 0-59
+ */
 void resetLed(unsigned char index)
 {
     index = (index + 59) % 60;
     set_bit(led_array[index / 8], index % 8);
 }
 
-// ÊıÂë¹ÜÓë LED ÏÔÊ¾
+/**
+ * @brief æ•°ç ç®¡ä¸ LED æ˜¾ç¤º
+ */
 void display()
 {
-    // -- ÊıÂë¹ÜÏÔÊ¾Ê±¼ä
-    // µÚÒ»Î»
+    // -- æ•°ç ç®¡æ˜¾ç¤ºæ—¶é—´
+    // ç¬¬ä¸€ä½
     SEG_COM1 = ENABLE;
     SEG_PORT = num_seg_sel[display_array[0]];
     delay(2);
     SEG_PORT = ALLOFF;
     SEG_COM1 = DISABLE;
 
-    // µÚ¶şÎ»
-    // ÅĞ¶ÏÃ°ºÅÏÔÊ¾Ê±×î¸ßÎ»¸´Î»
+    // ç¬¬äºŒä½
+    // åˆ¤æ–­å†’å·æ˜¾ç¤ºæ—¶æœ€é«˜ä½å¤ä½
     SEG_COM2 = ENABLE;
     if (blink == 0)
         SEG_PORT = num_seg_sel[display_array[1]] - 0x80;
@@ -146,21 +185,21 @@ void display()
     SEG_PORT = ALLOFF;
     SEG_COM2 = DISABLE;
 
-    // µÚÈıÎ»
+    // ç¬¬ä¸‰ä½
     SEG_COM3 = ENABLE;
     SEG_PORT = num_seg_sel[display_array[2]];
     delay(2);
     SEG_PORT = ALLOFF;
     SEG_COM3 = DISABLE;
 
-    // µÚËÄÎ»
+    // ç¬¬å››ä½
     SEG_COM4 = ENABLE;
     SEG_PORT = num_seg_sel[display_array[3]];
     delay(2);
     SEG_PORT = ALLOFF;
     SEG_COM4 = DISABLE;
 
-    // -- LED ÏÔÊ¾
+    // -- LED æ˜¾ç¤º
     // 1-8
     LED_COM1 = ENABLE;
     SEG_PORT = led_array[0];
@@ -217,7 +256,7 @@ void display()
     SEG_PORT = ALLOFF;
     LED_COM8 = DISABLE;
 
-    // ÏûÒş ¹Ø±ÕËùÓĞÏÔÊ¾
+    // æ¶ˆéš å…³é—­æ‰€æœ‰æ˜¾ç¤º
     SEG_COM1 = SEG_COM2 = SEG_COM3 = SEG_COM4 = ENABLE;
     LED_COM1 = LED_COM2 = LED_COM3 = LED_COM4 = ENABLE;
     LED_COM5 = LED_COM6 = LED_COM7 = LED_COM8 = ENABLE;
@@ -227,20 +266,28 @@ void display()
     LED_COM5 = LED_COM6 = LED_COM7 = LED_COM8 = DISABLE;
 }
 
-// Ê¹ÄÜ ADC ×ª»»
+/**
+ * @brief ä½¿èƒ½ ADC è½¬æ¢
+ */
 void enableAdc()
 {
     P1ASF = 0x03;
 }
 
-// ½ûÓÃ ADC ×ª»»
+/**
+ * @brief ç¦ç”¨ ADC è½¬æ¢
+ */
 void disableAdc()
 {
     P1ASF = 0x00;
 }
 
-// ¶ÁÈ¡ ADC Í¨µÀµÄÖµ
-// ch: ADC Í¨µÀĞòºÅ
+/**
+ * @brief è¯»å– ADC é€šé“çš„å€¼
+ * 
+ * @param ch ADC é€šé“åºå·
+ * @return 10 ä½ ADC æ•°å€¼
+ */
 unsigned int getAdcResult(unsigned char ch)
 {
     ADC_CONTR = ADC_POWER | ADC_SPEEDLL | ch | ADC_START;
@@ -257,14 +304,22 @@ unsigned int getAdcResult(unsigned char ch)
     return (ADC_RES * 4 + ADC_RESL); // Return ADC result.
 }
 
-// ¶ÁÈ¡ÎÂ¶È
+/**
+ * @brief è¯»å–æ¸©åº¦
+ * 
+ * @return æ¸©åº¦ å•ä½ä¸ºåƒåˆ†ä¹‹ä¸€æ‘„æ°åº¦
+ */
 unsigned int getTemperature(void)
 {
     adc_result = getAdcResult(0);
     return (unsigned int)((3950.0 / (11.33657 + log(6.04 * (float)adc_result / (1024.0 - (float)adc_result))) - 278.15) * 100);
 }
 
-// ¶ÁÈ¡¹âÃôµç×è·ÖÑ¹
+/**
+ * @brief è¯»å–ç¯å¢ƒå…‰äº®åº¦ç­‰çº§
+ * 
+ * @return å¯¹åº”å…‰å¼ºä¸‹æ•°ç ç®¡æ‰«æå»¶æ—¶
+ */
 unsigned int getLight(void)
 {
     adc_result = getAdcResult(1);

@@ -1,0 +1,530 @@
+\hypertarget{api_8c}{}\doxysection{Src/api.c File Reference}
+\label{api_8c}\index{Src/api.c@{Src/api.c}}
+
+
+Api program body.  
+
+
+{\ttfamily \#include \char`\"{}api.\+h\char`\"{}}\newline
+Include dependency graph for api.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=136pt]{api_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{api_8c_a6d7066138d22070be0234d8b113cf776}{delay}} (unsigned int t)
+\begin{DoxyCompactList}\small\item\em 短暂非精确延时 \end{DoxyCompactList}\item 
+unsigned char \mbox{\hyperlink{api_8c_ae86a6fdfb39996238f13457e2354a887}{bcd2hex}} (unsigned char bcd)
+\begin{DoxyCompactList}\small\item\em BCD 转 HEX. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8c_af927959e78504fd1afe1be1e10791ae0}{timer\+Init}} ()
+\begin{DoxyCompactList}\small\item\em 定时器初始化 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8c_adc86b84eeabe5d8dc8445cec2314d925}{system\+Init}} ()
+\begin{DoxyCompactList}\small\item\em 系统初始化 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8c_ab2d57968e8369cb0e70631ae40b683f4}{led\+All\+Off}} ()
+\begin{DoxyCompactList}\small\item\em 清除 LED 显示 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8c_a75684bb37152cb2262e8038fe09e5c9b}{led\+All\+On}} ()
+\begin{DoxyCompactList}\small\item\em 点亮全部 LED \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8c_a3546a3945c0e3045be04c886d8ca9047}{set\+Led}} (unsigned char index)
+\begin{DoxyCompactList}\small\item\em 指定 LED 打开显示 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8c_a5024a19a7db1b3ed494d83e330284a7f}{reset\+Led}} (unsigned char index)
+\begin{DoxyCompactList}\small\item\em 指定 LED 关闭显示 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8c_a1e5b20fed15743656bb6d2e6a6ea6269}{display}} ()
+\begin{DoxyCompactList}\small\item\em 数码管与 LED 显示 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8c_a5a0d1acb0559eefe7d81fc6a2460cfa9}{enable\+Adc}} ()
+\begin{DoxyCompactList}\small\item\em 使能 ADC 转换 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8c_a0347b7d5858d9a740368ae300b07fb61}{disable\+Adc}} ()
+\begin{DoxyCompactList}\small\item\em 禁用 ADC 转换 \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{api_8c_a6dd0264045665345ad0aa2fa2b78166b}{get\+Adc\+Result}} (unsigned char ch)
+\begin{DoxyCompactList}\small\item\em 读取 ADC 通道的值 \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{api_8c_a315093430974981332a18adb58f77684}{get\+Temperature}} (void)
+\begin{DoxyCompactList}\small\item\em 读取温度 \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{api_8c_a5f30673448d2ea931021ee5425498271}{get\+Light}} (void)
+\begin{DoxyCompactList}\small\item\em 读取环境光亮度等级 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+unsigned char \mbox{\hyperlink{api_8c_a83a37c444e654c1a5e4048da190fa58d}{num\+\_\+seg\+\_\+sel}} \mbox{[}$\,$\mbox{]} = \{0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90, 0xff, 0xc6\}
+\begin{DoxyCompactList}\small\item\em 数码管段选码 \end{DoxyCompactList}\item 
+unsigned char \mbox{\hyperlink{api_8c_a1529ccf8f9f3c74179e7a2e9e169a63e}{led\+\_\+array}} \mbox{[}8\mbox{]} = \{0\}
+\begin{DoxyCompactList}\small\item\em 周围 LED 显示数组 \end{DoxyCompactList}\item 
+unsigned char \mbox{\hyperlink{api_8c_ae2f16b89b9bc6dbd29e3a4134704b9e5}{display\+\_\+array}} \mbox{[}4\mbox{]} = \{0\}
+\begin{DoxyCompactList}\small\item\em 数码管显示内容 \end{DoxyCompactList}\item 
+char \mbox{\hyperlink{api_8c_a89c7d8c9d0aeaac33c0cbb363b419a10}{blink}} = 1
+\begin{DoxyCompactList}\small\item\em 冒号闪烁控制标志 \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{api_8c_a6cf5581e633e901594da18bae50dc4d4}{adc\+\_\+result}} = 0
+\begin{DoxyCompactList}\small\item\em 存储 ADC 转换结果 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Api program body. 
+
+\begin{DoxyVersion}{Version}
+v1.\+0 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Author}
+Xiaohei 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2021-\/11-\/20
+\end{DoxyDate}
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+Project git\+: github.\+com/mobyw/\+Digital\+Tube\+Clock 
+
+Definition in file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{api_8c_ae86a6fdfb39996238f13457e2354a887}\label{api_8c_ae86a6fdfb39996238f13457e2354a887}} 
+\index{api.c@{api.c}!bcd2hex@{bcd2hex}}
+\index{bcd2hex@{bcd2hex}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{bcd2hex()}{bcd2hex()}}
+{\footnotesize\ttfamily unsigned char bcd2hex (\begin{DoxyParamCaption}\item[{unsigned char}]{bcd }\end{DoxyParamCaption})}
+
+
+
+BCD 转 HEX. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bcd} & BCD 表示 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+HEX 表示 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00068}{68}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{api_8c_ae86a6fdfb39996238f13457e2354a887_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a6d7066138d22070be0234d8b113cf776}\label{api_8c_a6d7066138d22070be0234d8b113cf776}} 
+\index{api.c@{api.c}!delay@{delay}}
+\index{delay@{delay}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{delay()}{delay()}}
+{\footnotesize\ttfamily void delay (\begin{DoxyParamCaption}\item[{unsigned int}]{t }\end{DoxyParamCaption})}
+
+
+
+短暂非精确延时 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & 延时时间 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00054}{54}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=285pt]{api_8c_a6d7066138d22070be0234d8b113cf776_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a0347b7d5858d9a740368ae300b07fb61}\label{api_8c_a0347b7d5858d9a740368ae300b07fb61}} 
+\index{api.c@{api.c}!disableAdc@{disableAdc}}
+\index{disableAdc@{disableAdc}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{disableAdc()}{disableAdc()}}
+{\footnotesize\ttfamily void disable\+Adc (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+禁用 ADC 转换 
+
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00280}{280}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=310pt]{api_8c_a0347b7d5858d9a740368ae300b07fb61_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a1e5b20fed15743656bb6d2e6a6ea6269}\label{api_8c_a1e5b20fed15743656bb6d2e6a6ea6269}} 
+\index{api.c@{api.c}!display@{display}}
+\index{display@{display}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily void display (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+数码管与 LED 显示 
+
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00167}{167}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{api_8c_a1e5b20fed15743656bb6d2e6a6ea6269_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=201pt]{api_8c_a1e5b20fed15743656bb6d2e6a6ea6269_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a5a0d1acb0559eefe7d81fc6a2460cfa9}\label{api_8c_a5a0d1acb0559eefe7d81fc6a2460cfa9}} 
+\index{api.c@{api.c}!enableAdc@{enableAdc}}
+\index{enableAdc@{enableAdc}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{enableAdc()}{enableAdc()}}
+{\footnotesize\ttfamily void enable\+Adc (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+使能 ADC 转换 
+
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00272}{272}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=307pt]{api_8c_a5a0d1acb0559eefe7d81fc6a2460cfa9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a6dd0264045665345ad0aa2fa2b78166b}\label{api_8c_a6dd0264045665345ad0aa2fa2b78166b}} 
+\index{api.c@{api.c}!getAdcResult@{getAdcResult}}
+\index{getAdcResult@{getAdcResult}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{getAdcResult()}{getAdcResult()}}
+{\footnotesize\ttfamily unsigned int get\+Adc\+Result (\begin{DoxyParamCaption}\item[{unsigned char}]{ch }\end{DoxyParamCaption})}
+
+
+
+读取 ADC 通道的值 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & ADC 通道序号 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+10 位 ADC 数值 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00291}{291}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=349pt]{api_8c_a6dd0264045665345ad0aa2fa2b78166b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a5f30673448d2ea931021ee5425498271}\label{api_8c_a5f30673448d2ea931021ee5425498271}} 
+\index{api.c@{api.c}!getLight@{getLight}}
+\index{getLight@{getLight}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{getLight()}{getLight()}}
+{\footnotesize\ttfamily unsigned int get\+Light (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+读取环境光亮度等级 
+
+\begin{DoxyReturn}{Returns}
+对应光强下数码管扫描延时 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00323}{323}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{api_8c_a5f30673448d2ea931021ee5425498271_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a315093430974981332a18adb58f77684}\label{api_8c_a315093430974981332a18adb58f77684}} 
+\index{api.c@{api.c}!getTemperature@{getTemperature}}
+\index{getTemperature@{getTemperature}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{getTemperature()}{getTemperature()}}
+{\footnotesize\ttfamily unsigned int get\+Temperature (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+读取温度 
+
+\begin{DoxyReturn}{Returns}
+温度 单位为千分之一摄氏度 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00312}{312}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=275pt]{api_8c_a315093430974981332a18adb58f77684_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{api_8c_a315093430974981332a18adb58f77684_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_ab2d57968e8369cb0e70631ae40b683f4}\label{api_8c_ab2d57968e8369cb0e70631ae40b683f4}} 
+\index{api.c@{api.c}!ledAllOff@{ledAllOff}}
+\index{ledAllOff@{ledAllOff}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{ledAllOff()}{ledAllOff()}}
+{\footnotesize\ttfamily void led\+All\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+清除 LED 显示 
+
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00117}{117}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{api_8c_ab2d57968e8369cb0e70631ae40b683f4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a75684bb37152cb2262e8038fe09e5c9b}\label{api_8c_a75684bb37152cb2262e8038fe09e5c9b}} 
+\index{api.c@{api.c}!ledAllOn@{ledAllOn}}
+\index{ledAllOn@{ledAllOn}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{ledAllOn()}{ledAllOn()}}
+{\footnotesize\ttfamily void led\+All\+On (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+点亮全部 LED 
+
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00131}{131}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{api_8c_a75684bb37152cb2262e8038fe09e5c9b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a5024a19a7db1b3ed494d83e330284a7f}\label{api_8c_a5024a19a7db1b3ed494d83e330284a7f}} 
+\index{api.c@{api.c}!resetLed@{resetLed}}
+\index{resetLed@{resetLed}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{resetLed()}{resetLed()}}
+{\footnotesize\ttfamily void reset\+Led (\begin{DoxyParamCaption}\item[{unsigned char}]{index }\end{DoxyParamCaption})}
+
+
+
+指定 LED 关闭显示 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & LED 索引 0-\/59 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00158}{158}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{api_8c_a5024a19a7db1b3ed494d83e330284a7f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_a3546a3945c0e3045be04c886d8ca9047}\label{api_8c_a3546a3945c0e3045be04c886d8ca9047}} 
+\index{api.c@{api.c}!setLed@{setLed}}
+\index{setLed@{setLed}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{setLed()}{setLed()}}
+{\footnotesize\ttfamily void set\+Led (\begin{DoxyParamCaption}\item[{unsigned char}]{index }\end{DoxyParamCaption})}
+
+
+
+指定 LED 打开显示 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & LED 索引 0-\/59 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00147}{147}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=200pt]{api_8c_a3546a3945c0e3045be04c886d8ca9047_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_adc86b84eeabe5d8dc8445cec2314d925}\label{api_8c_adc86b84eeabe5d8dc8445cec2314d925}} 
+\index{api.c@{api.c}!systemInit@{systemInit}}
+\index{systemInit@{systemInit}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{systemInit()}{systemInit()}}
+{\footnotesize\ttfamily void system\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+系统初始化 
+
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00095}{95}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{api_8c_adc86b84eeabe5d8dc8445cec2314d925_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{api_8c_adc86b84eeabe5d8dc8445cec2314d925_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{api_8c_af927959e78504fd1afe1be1e10791ae0}\label{api_8c_af927959e78504fd1afe1be1e10791ae0}} 
+\index{api.c@{api.c}!timerInit@{timerInit}}
+\index{timerInit@{timerInit}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{timerInit()}{timerInit()}}
+{\footnotesize\ttfamily void timer\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+定时器初始化 
+
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00082}{82}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=303pt]{api_8c_af927959e78504fd1afe1be1e10791ae0_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{api_8c_a6cf5581e633e901594da18bae50dc4d4}\label{api_8c_a6cf5581e633e901594da18bae50dc4d4}} 
+\index{api.c@{api.c}!adc\_result@{adc\_result}}
+\index{adc\_result@{adc\_result}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{adc\_result}{adc\_result}}
+{\footnotesize\ttfamily unsigned int adc\+\_\+result = 0}
+
+
+
+存储 ADC 转换结果 
+
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00047}{47}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+\mbox{\Hypertarget{api_8c_a89c7d8c9d0aeaac33c0cbb363b419a10}\label{api_8c_a89c7d8c9d0aeaac33c0cbb363b419a10}} 
+\index{api.c@{api.c}!blink@{blink}}
+\index{blink@{blink}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{blink}{blink}}
+{\footnotesize\ttfamily char blink = 1}
+
+
+
+冒号闪烁控制标志 
+
+
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00044}{44}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+\mbox{\Hypertarget{api_8c_ae2f16b89b9bc6dbd29e3a4134704b9e5}\label{api_8c_ae2f16b89b9bc6dbd29e3a4134704b9e5}} 
+\index{api.c@{api.c}!display\_array@{display\_array}}
+\index{display\_array@{display\_array}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{display\_array}{display\_array}}
+{\footnotesize\ttfamily unsigned char display\+\_\+array\mbox{[}4\mbox{]} = \{0\}}
+
+
+
+数码管显示内容 
+
+下标 0 1 2 3 分别对应从左到右四个数码管 
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00041}{41}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+\mbox{\Hypertarget{api_8c_a1529ccf8f9f3c74179e7a2e9e169a63e}\label{api_8c_a1529ccf8f9f3c74179e7a2e9e169a63e}} 
+\index{api.c@{api.c}!led\_array@{led\_array}}
+\index{led\_array@{led\_array}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{led\_array}{led\_array}}
+{\footnotesize\ttfamily unsigned char led\+\_\+array\mbox{[}8\mbox{]} = \{0\}}
+
+
+
+周围 LED 显示数组 
+
+共 8 个 byte
+
+每个 byte 控制 8 个 LED 
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00034}{34}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+
+\mbox{\Hypertarget{api_8c_a83a37c444e654c1a5e4048da190fa58d}\label{api_8c_a83a37c444e654c1a5e4048da190fa58d}} 
+\index{api.c@{api.c}!num\_seg\_sel@{num\_seg\_sel}}
+\index{num\_seg\_sel@{num\_seg\_sel}!api.c@{api.c}}
+\doxysubsubsection{\texorpdfstring{num\_seg\_sel}{num\_seg\_sel}}
+{\footnotesize\ttfamily unsigned char num\+\_\+seg\+\_\+sel\mbox{[}$\,$\mbox{]} = \{0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90, 0xff, 0xc6\}}
+
+
+
+数码管段选码 
+
+分别为： 0 1 2 3 4 5 6 7 8 9 SPACE C
+
+空格不显示，C 显示字母 C 
+
+Definition at line \mbox{\hyperlink{api_8c_source_l00025}{25}} of file \mbox{\hyperlink{api_8c_source}{api.\+c}}.
+

@@ -1,0 +1,343 @@
+\hypertarget{main_8c}{}\doxysection{Src/main.c File Reference}
+\label{main_8c}\index{Src/main.c@{Src/main.c}}
+
+
+Main program body.  
+
+
+{\ttfamily \#include \char`\"{}main.\+h\char`\"{}}\newline
+Include dependency graph for main.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=144pt]{main_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{main_8c_aa808a0cd06802286e4f11433200fe970}{NUM\+\_\+\+PAGE}}~9
+\begin{DoxyCompactList}\small\item\em 页面总数量 \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_aa22f53f6e45124306f5d5354d2c5f6a3}{NUM\+\_\+\+TIME\+\_\+\+ANIMATE}}~2
+\begin{DoxyCompactList}\small\item\em 时间动画总数量 \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_a6e6afc89f611d35eeaf6e1deca3200a7}{NUM\+\_\+\+OFFLINE\+\_\+\+ANIMATE}}~2
+\begin{DoxyCompactList}\small\item\em 脱机动画总数量 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8c_ae6c6a2394b7afdebeeee05e6d37e9da8}{key\+Scan}} ()
+\begin{DoxyCompactList}\small\item\em 按键扫描 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_acdef7a1fd863a6d3770c1268cb06add3}{main}} ()
+\begin{DoxyCompactList}\small\item\em 主函数 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a5f6cfea807fbf06eb01cd7d9911498c1}{int\+Timer0}} () interrupt 1
+\begin{DoxyCompactList}\small\item\em 定时器 0 中断服务函数 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+unsigned char \mbox{\hyperlink{main_8c_aa365bd6cd1a047bd0e3614bcc2ef8c97}{timer\+\_\+cnt}} = 0
+\begin{DoxyCompactList}\small\item\em 定时器计次（中断一次加一） \end{DoxyCompactList}\item 
+unsigned char \mbox{\hyperlink{main_8c_ad60933d2517c096cc722d5538d5c7cff}{tick}} = 0
+\begin{DoxyCompactList}\small\item\em 定时器计次（中断十次加一） \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{main_8c_a49580519e129c6cc8c4936db280802f4}{light}} = 8
+\begin{DoxyCompactList}\small\item\em 显示延时 用于控制亮度 \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{main_8c_ad8006a99a132419a37703c267a7f4b9d}{temperature}} = 20
+\begin{DoxyCompactList}\small\item\em 存储温度结果 \end{DoxyCompactList}\item 
+bit \mbox{\hyperlink{main_8c_ac97329130f71ab7682fa279eddd8e168}{alarm\+\_\+control}} = 0
+\begin{DoxyCompactList}\small\item\em 闹钟开关 \end{DoxyCompactList}\item 
+bit \mbox{\hyperlink{main_8c_a402c5c86ccd55c206d7edeeac9203551}{light\+\_\+control}} = 0
+\begin{DoxyCompactList}\small\item\em 亮度调节开关 \end{DoxyCompactList}\item 
+unsigned char \mbox{\hyperlink{main_8c_a8badf87c91ab2f7a4c958fba89659222}{time\+\_\+animate}} = 0
+\begin{DoxyCompactList}\small\item\em 时间动画的序号 \end{DoxyCompactList}\item 
+unsigned char \mbox{\hyperlink{main_8c_aa6bb5c50f51f8b2326d4e3e157e34fd6}{offline\+\_\+animate}} = 0
+\begin{DoxyCompactList}\small\item\em 脱机动画 的序号 \end{DoxyCompactList}\item 
+char \mbox{\hyperlink{main_8c_a98b75ce136889783d052f253c1506315}{page}} = 0
+\begin{DoxyCompactList}\small\item\em 当前页面序号 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main program body. 
+
+\begin{DoxyVersion}{Version}
+v1.\+0 
+\end{DoxyVersion}
+\begin{DoxyAuthor}{Author}
+Xiaohei 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2021-\/11-\/20
+\end{DoxyDate}
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+Project git\+: github.\+com/mobyw/\+Digital\+Tube\+Clock 
+
+Definition in file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{main_8c_a6e6afc89f611d35eeaf6e1deca3200a7}\label{main_8c_a6e6afc89f611d35eeaf6e1deca3200a7}} 
+\index{main.c@{main.c}!NUM\_OFFLINE\_ANIMATE@{NUM\_OFFLINE\_ANIMATE}}
+\index{NUM\_OFFLINE\_ANIMATE@{NUM\_OFFLINE\_ANIMATE}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{NUM\_OFFLINE\_ANIMATE}{NUM\_OFFLINE\_ANIMATE}}
+{\footnotesize\ttfamily \#define NUM\+\_\+\+OFFLINE\+\_\+\+ANIMATE~2}
+
+
+
+脱机动画总数量 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00025}{25}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa808a0cd06802286e4f11433200fe970}\label{main_8c_aa808a0cd06802286e4f11433200fe970}} 
+\index{main.c@{main.c}!NUM\_PAGE@{NUM\_PAGE}}
+\index{NUM\_PAGE@{NUM\_PAGE}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{NUM\_PAGE}{NUM\_PAGE}}
+{\footnotesize\ttfamily \#define NUM\+\_\+\+PAGE~9}
+
+
+
+页面总数量 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00019}{19}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa22f53f6e45124306f5d5354d2c5f6a3}\label{main_8c_aa22f53f6e45124306f5d5354d2c5f6a3}} 
+\index{main.c@{main.c}!NUM\_TIME\_ANIMATE@{NUM\_TIME\_ANIMATE}}
+\index{NUM\_TIME\_ANIMATE@{NUM\_TIME\_ANIMATE}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{NUM\_TIME\_ANIMATE}{NUM\_TIME\_ANIMATE}}
+{\footnotesize\ttfamily \#define NUM\+\_\+\+TIME\+\_\+\+ANIMATE~2}
+
+
+
+时间动画总数量 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00022}{22}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8c_a5f6cfea807fbf06eb01cd7d9911498c1}\label{main_8c_a5f6cfea807fbf06eb01cd7d9911498c1}} 
+\index{main.c@{main.c}!intTimer0@{intTimer0}}
+\index{intTimer0@{intTimer0}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{intTimer0()}{intTimer0()}}
+{\footnotesize\ttfamily void int\+Timer0 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+定时器 0 中断服务函数 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00485}{485}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae6c6a2394b7afdebeeee05e6d37e9da8}\label{main_8c_ae6c6a2394b7afdebeeee05e6d37e9da8}} 
+\index{main.c@{main.c}!keyScan@{keyScan}}
+\index{keyScan@{keyScan}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{keyScan()}{keyScan()}}
+{\footnotesize\ttfamily void key\+Scan (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+按键扫描 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00093}{93}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=346pt]{main_8c_ae6c6a2394b7afdebeeee05e6d37e9da8_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{main_8c_ae6c6a2394b7afdebeeee05e6d37e9da8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_acdef7a1fd863a6d3770c1268cb06add3}\label{main_8c_acdef7a1fd863a6d3770c1268cb06add3}} 
+\index{main.c@{main.c}!main@{main}}
+\index{main@{main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily void main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+主函数 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00274}{274}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_acdef7a1fd863a6d3770c1268cb06add3_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8c_ac97329130f71ab7682fa279eddd8e168}\label{main_8c_ac97329130f71ab7682fa279eddd8e168}} 
+\index{main.c@{main.c}!alarm\_control@{alarm\_control}}
+\index{alarm\_control@{alarm\_control}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{alarm\_control}{alarm\_control}}
+{\footnotesize\ttfamily bit alarm\+\_\+control = 0}
+
+
+
+闹钟开关 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00040}{40}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a49580519e129c6cc8c4936db280802f4}\label{main_8c_a49580519e129c6cc8c4936db280802f4}} 
+\index{main.c@{main.c}!light@{light}}
+\index{light@{light}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{light}{light}}
+{\footnotesize\ttfamily unsigned int light = 8}
+
+
+
+显示延时 用于控制亮度 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00034}{34}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a402c5c86ccd55c206d7edeeac9203551}\label{main_8c_a402c5c86ccd55c206d7edeeac9203551}} 
+\index{main.c@{main.c}!light\_control@{light\_control}}
+\index{light\_control@{light\_control}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{light\_control}{light\_control}}
+{\footnotesize\ttfamily bit light\+\_\+control = 0}
+
+
+
+亮度调节开关 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00043}{43}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa6bb5c50f51f8b2326d4e3e157e34fd6}\label{main_8c_aa6bb5c50f51f8b2326d4e3e157e34fd6}} 
+\index{main.c@{main.c}!offline\_animate@{offline\_animate}}
+\index{offline\_animate@{offline\_animate}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{offline\_animate}{offline\_animate}}
+{\footnotesize\ttfamily unsigned char offline\+\_\+animate = 0}
+
+
+
+脱机动画 的序号 
+
+可在此处添加每个动画的注释
+
+0\+: 正向显示动画 1
+
+1\+: 反向显示动画 1 
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00065}{65}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a98b75ce136889783d052f253c1506315}\label{main_8c_a98b75ce136889783d052f253c1506315}} 
+\index{main.c@{main.c}!page@{page}}
+\index{page@{page}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{page}{page}}
+{\footnotesize\ttfamily char page = 0}
+
+
+
+当前页面序号 
+
+0\+: 显示时间 时间动画
+
+1\+: 调整分钟
+
+2\+: 调整小时
+
+3\+: 调整闹钟分钟
+
+4\+: 调整闹钟小时
+
+5\+: 闹钟开关
+
+6\+: 显示学号以及脱机动画
+
+7\+: 显示温度
+
+8\+: 光敏开关 
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00088}{88}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ad8006a99a132419a37703c267a7f4b9d}\label{main_8c_ad8006a99a132419a37703c267a7f4b9d}} 
+\index{main.c@{main.c}!temperature@{temperature}}
+\index{temperature@{temperature}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temperature}{temperature}}
+{\footnotesize\ttfamily unsigned int temperature = 20}
+
+
+
+存储温度结果 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00037}{37}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ad60933d2517c096cc722d5538d5c7cff}\label{main_8c_ad60933d2517c096cc722d5538d5c7cff}} 
+\index{main.c@{main.c}!tick@{tick}}
+\index{tick@{tick}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{tick}{tick}}
+{\footnotesize\ttfamily unsigned char tick = 0}
+
+
+
+定时器计次（中断十次加一） 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00031}{31}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a8badf87c91ab2f7a4c958fba89659222}\label{main_8c_a8badf87c91ab2f7a4c958fba89659222}} 
+\index{main.c@{main.c}!time\_animate@{time\_animate}}
+\index{time\_animate@{time\_animate}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{time\_animate}{time\_animate}}
+{\footnotesize\ttfamily unsigned char time\+\_\+animate = 0}
+
+
+
+时间动画的序号 
+
+可在此处添加每个动画的注释
+
+0\+: 显示秒
+
+1\+: 反色显示秒 
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00054}{54}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa365bd6cd1a047bd0e3614bcc2ef8c97}\label{main_8c_aa365bd6cd1a047bd0e3614bcc2ef8c97}} 
+\index{main.c@{main.c}!timer\_cnt@{timer\_cnt}}
+\index{timer\_cnt@{timer\_cnt}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{timer\_cnt}{timer\_cnt}}
+{\footnotesize\ttfamily unsigned char timer\+\_\+cnt = 0}
+
+
+
+定时器计次（中断一次加一） 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00028}{28}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
